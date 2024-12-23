@@ -1,0 +1,17 @@
+:root {
+  --active:#FDA214;
+  --inactive-dark:#BCCED9;
+  --inactive-dark:#F2F2F2;
+  --bg-dark:#152938;
+  --bg-light:#FCFCFC;
+  --bg-medium:#304859;
+  --bg-blue-dark:#7191A5;
+  --bg-blue-light:#6395B8;
+   
+  font-family: 'Atkinson Hyperlegible';
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
