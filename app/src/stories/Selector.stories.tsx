@@ -21,9 +21,10 @@ export const Hidden: Story = {
     state: "hidden",
     value: 6,
     mode: "graphic",
+    gridSize: 4,
   },
   render: (args) => (
-    <div style={{width:'60px', height:'60px', border:'1px solid black'}}>
+    <div style={{ width: "60px", height: "60px", border: "1px solid black" }}>
       <Selector {...args} />
     </div>
   ),
@@ -34,23 +35,24 @@ export const WithGraphicActive: Story = {
     state: "active",
     value: 6,
     mode: "graphic",
+    gridSize: 6,
   },
   render: (args) => (
-    <div style={{width:'60px', height:'60px', border:'1px solid black'}}>
+    <div style={{ width: "60px", height: "60px", border: "1px solid black" }}>
       <Selector {...args} />
     </div>
   ),
 };
-
 
 export const WithGraphicInactive: Story = {
   args: {
     state: "inactive",
     value: 6,
     mode: "graphic",
+    gridSize: 4,
   },
   render: (args) => (
-    <div style={{width:'60px', height:'60px', border:'1px solid black'}}>
+    <div style={{ width: "60px", height: "60px", border: "1px solid black" }}>
       <Selector {...args} />
     </div>
   ),
@@ -61,9 +63,18 @@ export const NoGraphicActive: Story = {
     state: "active",
     value: 18,
     mode: "digit",
+    gridSize: 6,
   },
   render: (args) => (
-    <div style={{width:'60px', height:'60px', border:'1px solid black', fontFamily:'Atkinson Hyperlegible',fontWeight:'700'}}>
+    <div
+      style={{
+        width: "60px",
+        height: "60px",
+        border: "1px solid black",
+        fontFamily: "Atkinson Hyperlegible",
+        fontWeight: "700",
+      }}
+    >
       <Selector {...args} />
     </div>
   ),
@@ -74,9 +85,10 @@ export const NoGraphicInactive: Story = {
     state: "inactive",
     value: 6,
     mode: "digit",
+    gridSize:4
   },
   render: (args) => (
-    <div style={{width:'60px', height:'60px', border:'1px solid black'}}>
+    <div style={{ width: "60px", height: "60px", border: "1px solid black" }}>
       <Selector {...args} />
     </div>
   ),

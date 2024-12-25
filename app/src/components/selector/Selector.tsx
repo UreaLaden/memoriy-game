@@ -12,6 +12,7 @@ import { SelectorContainer } from "./Selector.components";
 export interface SelectorProps {
   mode: SelectorMode;
   state: SelectorState;
+  gridSize: 4 | 6;
   value: number;
   onClick: () => void;
 }
@@ -34,11 +35,11 @@ const Selector: FC<SelectorProps> = ({ state, mode, value }) => {
     return (
       <div
         style={{
-          color: "white",
+          color: state !== "hidden" ? "white" : "transparent",
           width: "fit-content",
           height: "fit-content",
-          fontSize: "2rem",  
-          fontWeight:'700'       
+          fontSize: "2rem",
+          fontWeight: "700",
         }}
       >
         {value}
