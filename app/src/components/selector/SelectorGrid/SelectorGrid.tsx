@@ -1,6 +1,6 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import Selector from "../Selector";
-import { SelectorMode } from "../../../utils/models";
+import { SelectorMode, SelectorState } from "../../../utils/models";
 import { SelectorGridContainer } from "./SelectorGrid.component";
 
 export interface SelectorGridProps {
@@ -8,26 +8,71 @@ export interface SelectorGridProps {
   gridMode: SelectorMode;
 }
 const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
-  const Grid = useMemo(() => {
+  const [gridOptions, setGridOptions] = useState<Map<number, string[]>>(
+    new Map()
+  );
+
+  const onGridOptionSelected = useCallback((selection: number, id: string) => {
+    setGridOptions((prev) => {
+      const updatedOptions = new Map(prev);
+
+      const prevSelections = updatedOptions.get(selection) || [];
+
+      if (prevSelections.length > 1 && prevSelections.includes(id)) {
+        return updatedOptions;
+      }
+
+      const updatedSelections = [...prevSelections, id];
+
+      updatedOptions.set(selection, updatedSelections);
+
+      return updatedOptions;
+    });
+  }, []);
+
+  function shuffleArray<T>(array: T[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  const selectorOptions = useMemo(() => {
     const cells = Array.from({ length: gridSize ** 2 }).map((_, i) => i + 1);
     const mid = Math.ceil(cells.length / 2);
-    const values = cells.filter((val, idx) => idx < mid && val > 0);
-    const grid = values.concat(values);
+    const values = cells.slice(0, mid);
 
-    return grid.map((val, idx) => {
+    const grid = shuffleArray(
+      values.concat(values).map((option, idx) => ({
+        id: `selector-${option}-${idx}`,
+        value: option,
+      }))
+    );
+    return grid;
+  }, [gridSize]);
+
+  const Grid = useMemo(() => {   
+
+    return selectorOptions.map((val) => {
+      const options = gridOptions.get(val.value) || [];
+      const wasSelected = options.includes(val.id);
+      const state: SelectorState = wasSelected ? "inactive" : "hidden";
+
       return (
-        <div key={idx}>
+        <div key={val.id}>
           <Selector
+            id={val.id}
             mode={gridMode}
             gridSize={gridSize}
-            state={"hidden"}
-            value={val}
-            onClick={() => console.log("Clicked " + val)}
+            state={state}
+            value={val.value}
+            onClick={onGridOptionSelected}
           />
         </div>
       );
     });
-  }, [gridMode, gridSize]);
+  }, [selectorOptions, gridOptions, gridMode, gridSize, onGridOptionSelected]);
   return (
     <SelectorGridContainer gridsize={gridSize}>{Grid}</SelectorGridContainer>
   );

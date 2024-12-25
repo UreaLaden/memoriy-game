@@ -10,17 +10,18 @@ import { SnowflakeIcon } from "../../svgs";
 import { SelectorContainer } from "./Selector.components";
 
 export interface SelectorProps {
+  id: string;
   mode: SelectorMode;
   state: SelectorState;
   gridSize: 4 | 6;
   value: number;
-  onClick: () => void;
+  onClick: (selection: number, id: string) => void;
 }
 
-const Selector: FC<SelectorProps> = ({ state, mode, value }) => {
+const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
   const bgColor = useMemo(() => ColorMap.get(state) || "transparent", [state]);
 
-  const Graphic = useMemo(() => {
+  const Graphic = useMemo(() => {    
     if (mode === "graphic") {
       const iconProps: iSelectorIconProps = {
         primaryFill: "white",
@@ -47,8 +48,16 @@ const Selector: FC<SelectorProps> = ({ state, mode, value }) => {
     );
   }, [mode, state, value]);
 
+  const onSelected = () => {
+    onClick(value, id);    
+  };
+
   return (
-    <SelectorContainer bgcolor={bgColor} hovercolor={"var(--bg-blue-light)"}>
+    <SelectorContainer
+      bgcolor={bgColor}
+      hovercolor={"var(--bg-blue-light)"}
+      onClick={onSelected}
+    >
       {Graphic}
     </SelectorContainer>
   );
