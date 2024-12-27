@@ -20,7 +20,7 @@ const ActionButton: FC<ActionButtonProps> = ({ text, onClick, isPrimary }) => {
           ? Colors["--orange-peal"]
           : Colors["--white-smoke"],
         width: "100%",
-        borderRadius: "20px",
+        borderRadius: "25px",
         fontWeight: 700,
         fontSize:'1.2em',
         textDecoration:'none',

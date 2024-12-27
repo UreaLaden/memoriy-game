@@ -23,9 +23,20 @@ export const BootstrapDialog = styledMUI(Dialog)(({ theme }) => ({
   },
 }));
 
-export const SubHeader = styled.h3`
+export const SubHeader = styled.h3<{ resetmargin?: boolean }>`
   color: ${Colors["--air-force-blue"]};
   fontweight: 700;
+  margin: ${({ resetmargin }) => (resetmargin ? 0 : "1 0")};
+  font-size: 1rem;
+  white-space: nowrap;
+`;
+
+export const MainHeader = styled.h2`
+  color: ${Colors["--gunmetal"]};
+  fontweight: 700;
+  padding: 0;
+  lineheight: 1;
+  margin: 0;
 `;
 
 export const OptionContainer = styled.div`
@@ -47,4 +58,14 @@ export const Option = styled.div<{ bgcolor?: string }>`
   font-weight: 700;
   font-size: 1.2em;
   pointer-events: none;
+`;
+
+export const MetricContainer = styled.div<{
+  bgcolor?: string;
+  fontcolor?: string;
+}>`
+  color: ${({ fontcolor }) => fontcolor || Colors["--white"]};
+  background-color: ${({ bgcolor }) => bgcolor || Colors["--gunmetal"]};
+  padding:1em;
+  border-radius:10px;
 `;

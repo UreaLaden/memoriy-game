@@ -88,3 +88,30 @@ StartDesktop.args = {
   gameState: GameState.START,
   isOpen: true,
 };
+
+export const EndMobile = Template.bind({})
+EndMobile.parameters = {
+  ...Mobile.parameters,
+};
+EndMobile.args = {
+  gameState: GameState.END,
+  isOpen: true,
+};
+
+export const EndTablet = Template.bind({})
+EndTablet.parameters = {
+  ...Tablet.parameters,
+};
+EndTablet.args = {
+  gameState: GameState.END,
+  isOpen: true,
+};
+
+export const EndDesktop = Template.bind({})
+EndDesktop.parameters = {
+  ...Desktop.parameters,
+};
+EndDesktop.args = {
+  gameState: GameState.END,
+  isOpen: true,
+};
