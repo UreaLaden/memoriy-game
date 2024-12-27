@@ -1,5 +1,5 @@
 import "./App.css";
-import Selector from "./components/selector/Selector";
+import Selector from "./components/Selector/Selector";
 
 function App() {
   return (

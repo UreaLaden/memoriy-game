@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import TurnIndicator from "../components/selector/TurnIndicator/TurnIndicator";
+import TurnIndicator from "../components/TurnIndicator/TurnIndicator";
 
 const meta = {
   title: "Components/TurnIndicator",

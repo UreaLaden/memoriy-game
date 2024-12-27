@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 
-import Selector from "../components/selector/Selector";
+import Selector from "../components/Selector/Selector";
 
 const meta = {
   title: "Components/Selector",

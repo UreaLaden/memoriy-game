@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import SelectorGrid from "../components/selector/SelectorGrid/SelectorGrid";
+import SelectorGrid from "../components/SelectorGrid/SelectorGrid";
 
 const meta = {
   title: "Components/SelectorGrid",

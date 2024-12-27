@@ -5,7 +5,7 @@ import {
   SelectorMode,
   SelectorState,
 } from "../../utils/models";
-import { ColorMap } from "../../utils/constants";
+import { ColorMap, Colors } from "../../utils/constants";
 import { SnowflakeIcon } from "../../svgs";
 import { SelectorContainer } from "./Selector.components";
 
@@ -21,11 +21,11 @@ export interface SelectorProps {
 const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
   const bgColor = useMemo(() => ColorMap.get(state) || "transparent", [state]);
 
-  const Graphic = useMemo(() => {    
+  const Graphic = useMemo(() => {
     if (mode === "graphic") {
       const iconProps: iSelectorIconProps = {
-        primaryFill: "white",
-        secondaryFill: "white",
+        primaryFill: Colors["--white"],
+        secondaryFill: Colors["--white"],
         vbX: 0,
         vbY: 0,
         vbWidth: 56,
@@ -36,7 +36,7 @@ const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
     return (
       <div
         style={{
-          color: state !== "hidden" ? "white" : "transparent",
+          color: state !== "hidden" ? Colors["--white"] : "transparent",
           width: "fit-content",
           height: "fit-content",
           fontSize: "2rem",
@@ -49,13 +49,13 @@ const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
   }, [mode, state, value]);
 
   const onSelected = () => {
-    onClick(value, id);    
+    onClick(value, id);
   };
 
   return (
     <SelectorContainer
       bgcolor={bgColor}
-      hovercolor={"var(--bg-blue-light)"}
+      hovercolor={Colors["--air-super-blue"]}
       onClick={onSelected}
     >
       {Graphic}

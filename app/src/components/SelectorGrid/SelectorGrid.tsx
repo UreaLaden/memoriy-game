@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo, useState } from "react";
-import Selector from "../Selector";
-import { SelectorMode, SelectorState } from "../../../utils/models";
+import Selector from "../Selector/Selector";
+import { SelectorMode, SelectorState } from "../../utils/models";
 import { SelectorGridContainer } from "./SelectorGrid.component";
 
 export interface SelectorGridProps {

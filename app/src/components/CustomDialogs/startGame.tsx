@@ -1,31 +1,46 @@
-import {
-  Button,
+import {  
   DialogActions,
-  DialogContent,
-  Typography,
+  DialogContent,  
 } from "@mui/material";
 import React, { FC } from "react";
+import { Colors } from "../../utils/constants";
+import ActionButton from "../ActionButton/ActionButton";
+import { SubHeader, OptionContainer, Option } from "./dialogs.component";
 
 export const Start: FC = () => {
+ 
+  const onStartGame = () => {
+    console.log("Start Game not yet implemented");
+  };
+
   return (
     <React.Fragment>
       <DialogContent>
-        <Typography>Select Theme</Typography>
-        <div>
-          <div>Numbers</div>
-          <div>Icons</div>
-        </div>
-        <Typography>Numbers of Players</Typography>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <Typography>Grid Size</Typography>
-        <div>4x4</div>
-        <div>6x6</div>
+        <SubHeader>Select Theme</SubHeader>
+        <OptionContainer>
+          <Option bgcolor={Colors["--charcoal"]}>Numbers</Option>
+          <Option bgcolor={Colors["--columbia-blue"]}>Icons</Option>
+        </OptionContainer>
+
+        <SubHeader>Numbers of Players</SubHeader>
+        <OptionContainer>
+          <Option bgcolor={Colors["--charcoal"]}>1</Option>
+          <Option bgcolor={Colors["--columbia-blue"]}>2</Option>
+          <Option bgcolor={Colors["--columbia-blue"]}>3</Option>
+          <Option bgcolor={Colors["--columbia-blue"]}>4</Option>
+        </OptionContainer>
+        <SubHeader>Grid Size</SubHeader>
+        <OptionContainer>
+          <Option bgcolor={Colors["--charcoal"]}>4x4</Option>
+          <Option bgcolor={Colors["--columbia-blue"]}>6x6</Option>
+        </OptionContainer>
       </DialogContent>
-      <DialogActions>
-        <Button>Start Game</Button>
+      <DialogActions sx={{margin:'0 1em 1em 1em'}}>
+        <ActionButton
+          text={"Start Game"}
+          onClick={onStartGame}
+          isPrimary={true}
+        />
       </DialogActions>
     </React.Fragment>
   );
