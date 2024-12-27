@@ -21,4 +21,5 @@ export const enum GameState {
   START,
   PAUSE,
   END,
+  ACTIVE
 }

@@ -12,6 +12,14 @@ const GlobalStyle = createGlobalStyle`
   --white:#FCFCFC;
   --white-smoke:#F2F2F2;
   --air-super-blue:#6395B8;
+  
+  height:100%;
+  }
+
+  html,body,#root{
+    height:100%;
+    margin:0;
+    padding:0;
   }
 
 body {
@@ -19,6 +27,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
+#root{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+}
+
 `;
 
 export default GlobalStyle;

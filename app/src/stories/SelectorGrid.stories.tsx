@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryFn } from "@storybook/react";
 
-import SelectorGrid from "../components/SelectorGrid/SelectorGrid";
+import SelectorGrid, {
+  SelectorGridProps,
+} from "../components/SelectorGrid/SelectorGrid";
 
 const meta = {
   title: "Components/SelectorGrid",
@@ -12,28 +14,86 @@ const meta = {
 } satisfies Meta<typeof SelectorGrid>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const FourByFour: Story = {
-  args: {
-    gridSize: 4,
-    gridMode: "digit",
+const Template: StoryFn<SelectorGridProps> = (args: SelectorGridProps) => (
+  <div>
+    <SelectorGrid {...args} />
+  </div>
+);
+
+export const Mobile = Template.bind({});
+Mobile.parameters = {
+  viewport: {
+    defaultViewport: "mobile",
   },
-  render: (args) => (
-    <div>
-      <SelectorGrid {...args} />
-    </div>
-  ),
 };
 
-export const SixBySix: Story = {
-  args: {
-    gridSize: 6,
-    gridMode: "digit",
+export const Tablet = Template.bind({});
+Tablet.parameters = {
+  viewport: {
+    defaultViewport: "tablet",
   },
-  render: (args) => (
-    <div>
-      <SelectorGrid {...args} />
-    </div>
-  ),
 };
+
+export const Desktop = Template.bind({});
+Desktop.parameters = {
+  viewport: {
+    defaultViewport: "desktop",
+  },
+};
+
+export const FourByFourMobile = Template.bind({});
+FourByFourMobile.parameters = {
+  ...Mobile.parameters,
+};
+FourByFourMobile.args = {
+  gridSize: 4,
+  gridMode: "digit",
+};
+
+export const FourByFourTablet = Template.bind({});
+FourByFourTablet.parameters = {
+  ...Tablet.parameters,
+};
+FourByFourTablet.args = {
+  gridSize: 4,
+  gridMode: "digit",
+};
+
+export const FourByFourDesktop = Template.bind({});
+FourByFourDesktop.parameters = {
+  ...Desktop.parameters,
+};
+FourByFourDesktop.args = {
+  gridSize: 4,
+  gridMode: "digit",
+};
+
+export const SixBySixMobile = Template.bind({});
+SixBySixMobile.parameters = {
+  ...Mobile.parameters,
+};
+SixBySixMobile.args = {
+  gridSize: 6,
+  gridMode: "digit",
+};
+
+export const SixBySixTablet = Template.bind({});
+SixBySixTablet.parameters = {
+  ...Tablet.parameters,
+};
+SixBySixTablet.args = {
+  gridSize: 6,
+  gridMode: "digit",
+};
+
+export const SixBySixDesktop = Template.bind({});
+SixBySixDesktop.parameters = {
+  ...Desktop.parameters,
+};
+SixBySixDesktop.args = {
+  gridSize: 6,
+  gridMode: "digit",
+};
+
+

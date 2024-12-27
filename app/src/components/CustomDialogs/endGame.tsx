@@ -1,7 +1,12 @@
 import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { FC, useMemo } from "react";
 import ActionButton from "../ActionButton/ActionButton";
-import { MainHeader, MetricContainer, SubHeader } from "./dialogs.component";
+import {
+  MainHeader,
+  MetricContainer,
+  MetricItemContainer,
+  SubHeader,
+} from "./dialogs.component";
 import { Colors } from "../../utils/constants";
 
 export const End: FC = () => {
@@ -52,14 +57,7 @@ export const End: FC = () => {
               }
               key={idx + "player"}
             >
-              <div
-                style={{
-                  fontWeight: 700,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <MetricItemContainer>
                 <span
                   style={{
                     color:
@@ -71,7 +69,7 @@ export const End: FC = () => {
                   Player {idx} {idx === winner ? "(Winner!)" : ""}
                 </span>
                 <span style={{ fontSize: "1.5em" }}>{idx} Pairs</span>
-              </div>
+              </MetricItemContainer>
             </MetricContainer>
           );
         })}

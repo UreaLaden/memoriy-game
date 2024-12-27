@@ -66,6 +66,13 @@ export const MetricContainer = styled.div<{
 }>`
   color: ${({ fontcolor }) => fontcolor || Colors["--white"]};
   background-color: ${({ bgcolor }) => bgcolor || Colors["--gunmetal"]};
-  padding:1em;
-  border-radius:10px;
+  padding: 1em;
+  border-radius: 10px;
+`;
+
+export const MetricItemContainer = styled.div`
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
