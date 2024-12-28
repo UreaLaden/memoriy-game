@@ -1,7 +1,11 @@
 import { FC, useMemo } from "react";
-import { GameState } from "../../utils/constants";
-import { BootstrapDialog } from "./dialogs.component";
-import { DialogContent } from "@mui/material";
+import { Colors, GameState } from "../../utils/constants";
+import {
+  BackdropHeader,
+  BootstrapDialog,
+  StyledBackdrop,
+} from "./dialogs.component";
+import { BackdropRoot, DialogContent } from "@mui/material";
 import { Start } from "./startGame";
 import { Pause } from "./pause";
 import { End } from "./endGame";
@@ -28,9 +32,26 @@ const CustomDialog: FC<CustomDialogProps> = ({ gameState, isOpen }) => {
   }, [gameState]);
 
   return (
-    <BootstrapDialog onClose={handleClose} open={isOpen}>
-      {Content}
-    </BootstrapDialog>
+    <>
+      {gameState === GameState.START && isOpen && (
+        <StyledBackdrop bgcolor={Colors["--gunmetal"]}>
+          <BackdropHeader>memory</BackdropHeader>
+        </StyledBackdrop>
+      )}
+      <BootstrapDialog
+        onClose={handleClose}
+        open={isOpen}
+        slotProps={{
+          backdrop: {
+            style: {
+              opacity: gameState === GameState.START ? 0 : 1,
+            },
+          },
+        }}
+      >
+        {Content}
+      </BootstrapDialog>
+    </>
   );
 };
 export default CustomDialog;

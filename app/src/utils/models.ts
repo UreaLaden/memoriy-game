@@ -24,6 +24,13 @@ export interface iMove {
   playerId: PlayerId;
 }
 
+export interface iSelection {
+  theme: SelectorMode;
+  playerCount: PlayerId;
+  gridSize: iGrid;
+}
+
+
 export interface iPlayer {
   id: PlayerId;
   moves: iMove[];

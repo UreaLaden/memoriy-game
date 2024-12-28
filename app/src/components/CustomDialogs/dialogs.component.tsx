@@ -23,6 +23,27 @@ export const BootstrapDialog = styledMUI(Dialog)(({ theme }) => ({
   },
 }));
 
+export const StyledBackdrop = styled.div<{ bgcolor?: string }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: ${({ bgcolor }) => bgcolor || "rgba(0, 0, 0, 0.8)"};
+  z-index: 1300;
+`;
+
+export const BackdropHeader = styled.h1`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: ${Colors["--white"]};
+  font-weight: 700;
+  text-align: center;
+  z-index: 1400;
+`;
+
 export const SubHeader = styled.h3<{ resetmargin?: boolean }>`
   color: ${Colors["--air-force-blue"]};
   fontweight: 700;
@@ -56,8 +77,12 @@ export const Option = styled.div<{ bgcolor?: string }>`
   border-radius: 25px;
   text-align: center;
   font-weight: 700;
-  font-size: 1.2em;
-  pointer-events: none;
+  font-size: 1.2em;  
+  transition:background-color .3s ease-in-out;
+
+  &:hover {
+    background-color: ${Colors["--air-force-blue"]};
+  }
 `;
 
 export const MetricContainer = styled.div<{
