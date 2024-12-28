@@ -1,10 +1,11 @@
 import { DialogActions, DialogContent } from "@mui/material";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import { Colors } from "../../utils/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import { SubHeader, OptionContainer, Option } from "./dialogs.component";
 import { iGrid, iSelection, PlayerId, SelectorMode } from "../../utils/models";
 import useGameContext from "../../utils/hooks/useGameContext";
+import { toTitleCase } from "../../utils/helpers";
 
 export const Start: FC = () => {
   const context = useGameContext();
@@ -15,8 +16,9 @@ export const Start: FC = () => {
     gridSize: 4,
   });
 
+  const themes = useMemo(() => ["numbers", "icons"], []);
+
   const onStartGame = useCallback(() => {
-    
     context.newGame(
       selectedOptions.theme,
       selectedOptions.playerCount,
@@ -30,7 +32,7 @@ export const Start: FC = () => {
       throw new Error("Invalid or missing target");
     }
 
-    if (["numbers", "icons"].includes(target)) {
+    if (themes.includes(target)) {
       setSelectedOptions((prev) => ({
         ...prev,
         theme: target === "numbers" ? "digit" : "graphic",
@@ -61,7 +63,7 @@ export const Start: FC = () => {
   const currentColor = useCallback(
     (content: string) => {
       const text = content.toLowerCase();
-      if (["numbers", "icons"].includes(text)) {
+      if (themes.includes(text)) {
         const translatedValue: SelectorMode =
           text === "numbers" ? "digit" : "graphic";
 
@@ -90,37 +92,40 @@ export const Start: FC = () => {
       <DialogContent>
         <SubHeader>Select Theme</SubHeader>
         <OptionContainer>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("Numbers")}>
-            Numbers
-          </Option>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("Icons")}>
-            Icons
-          </Option>
+          {themes.map((val, idx) => (
+            <Option
+              key={idx + val}
+              onClick={onOptionSelected}
+              bgcolor={currentColor(val)}
+            >
+              {toTitleCase(val)}
+            </Option>
+          ))}          
         </OptionContainer>
 
         <SubHeader>Numbers of Players</SubHeader>
         <OptionContainer>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("1")}>
-            1
-          </Option>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("2")}>
-            2
-          </Option>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("3")}>
-            3
-          </Option>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("4")}>
-            4
-          </Option>
+          {[1, 2, 3, 4].map((val, idx) => (
+            <Option
+              key={idx + val}
+              onClick={onOptionSelected}
+              bgcolor={currentColor(`${val}`)}
+            >
+              {val}
+            </Option>
+          ))}
         </OptionContainer>
         <SubHeader>Grid Size</SubHeader>
         <OptionContainer>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("4x4")}>
-            4x4
-          </Option>
-          <Option onClick={onOptionSelected} bgcolor={currentColor("6x6")}>
-            6x6
-          </Option>
+        {['4x4','6x6'].map((val, idx) => (
+            <Option
+              key={idx + val}
+              onClick={onOptionSelected}
+              bgcolor={currentColor(val)}
+            >
+              {toTitleCase(val)}
+            </Option>
+          ))}          
         </OptionContainer>
       </DialogContent>
       <DialogActions sx={{ margin: "0 1em 1em 1em" }}>

@@ -45,6 +45,13 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       gridSize: gridSize,
       gameTime: undefined,
     }));
+
+    const config = JSON.stringify({
+      theme: theme,
+      playerCount: playerCount,
+      gridSize: gridSize,
+    });
+    sessionStorage.setItem("config", config);
   };
 
   const setupGameHandler = () => {
