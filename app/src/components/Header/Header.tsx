@@ -14,6 +14,14 @@ const Header = () => {
     context.pause();
   };
 
+  const onRestart = () => {
+    context.restart();
+  }
+
+  const onNewGame = () => {
+    context.setup();
+  }
+
   const Actions = useMemo(() => {
     if (dimensions.width <= MOBILE_WIDTH) {
       return (
@@ -24,12 +32,12 @@ const Header = () => {
       <>
         <ActionButton
           text={"Restart"}
-          onClick={() => console.log("Not Yet Implemented")}
+          onClick={onRestart}
           isPrimary={true}
         />
         <ActionButton
           text={"New Game"}
-          onClick={() => console.log("Not Yet Implemented")}
+          onClick={onNewGame}
           isPrimary={false}
         />
       </>
