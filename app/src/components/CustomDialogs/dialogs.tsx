@@ -13,13 +13,20 @@ import { End } from "./endGame";
 export interface CustomDialogProps {
   gameState: GameState;
   isOpen: boolean;
+  onClose: () => void;
 }
 
-const CustomDialog: FC<CustomDialogProps> = ({ gameState, isOpen }) => {
-  const handleClose = () => {};
+const CustomDialog: FC<CustomDialogProps> = ({
+  gameState,
+  isOpen,
+  onClose,
+}) => {
+  const handleClose = () => {
+    onClose();
+  };
 
   const Content = useMemo(() => {
-    switch (gameState) {
+    switch (isOpen && gameState) {
       case GameState.START:
         return <Start />;
       case GameState.PAUSE:
@@ -27,9 +34,9 @@ const CustomDialog: FC<CustomDialogProps> = ({ gameState, isOpen }) => {
       case GameState.END:
         return <End />;
       default:
-        return <DialogContent>This shouldn't be visible</DialogContent>;
+        return null;
     }
-  }, [gameState]);
+  }, [gameState, isOpen]);
 
   return (
     <>

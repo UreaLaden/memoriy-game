@@ -6,26 +6,30 @@ import CustomDialog from "./components/CustomDialogs/dialogs";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 
+
 function App() {
   const context = useGameContext();
+  
+  const onCloseDialog = () => {    
+    context.pause();
+  };
 
   return (
     <>
       <AppContainer>
         <Header />
-        {context.game.state === GameState.ACTIVE && (
-          <GameSpace>
-            <SelectorGrid
-              gridSize={context.game.gridSize}
-              gridMode={context.game.theme}
-            />
-          </GameSpace>
-        )}
+        <GameSpace>
+          <SelectorGrid
+            gridSize={context.game.gridSize}
+            gridMode={context.game.theme}
+          />
+        </GameSpace>
         <Footer />
       </AppContainer>
       <CustomDialog
         gameState={context.game.state}
-        isOpen={context.game.state === GameState.START}
+        isOpen={context.game.state !== GameState.ACTIVE}
+        onClose={onCloseDialog}
       />
     </>
   );
