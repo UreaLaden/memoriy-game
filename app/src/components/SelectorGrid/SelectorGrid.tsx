@@ -1,23 +1,38 @@
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Selector from "../Selector/Selector";
 import { SelectorMode, SelectorState } from "../../utils/models";
 import { SelectorGridContainer } from "./SelectorGrid.component";
 import { useGetDimensions } from "../../utils/hooks/useGetDimensions";
 import {
   DESKTOP_WIDTH,
+  GameState,
   MOBILE_WIDTH,
   TABLET_WIDTH,
 } from "../../utils/constants";
+import { useGameContext } from "../../utils/hooks/useGameContext";
 
 export interface SelectorGridProps {
   gridSize: 4 | 6;
   gridMode: SelectorMode;
 }
-const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
+const SelectorGrid: FC<SelectorGridProps> = ({ gridMode }) => {
+  const context = useGameContext();
+
+  const gridSize = useMemo(
+    () => context.game.gridSize,
+    [context.game.gridSize]
+  );
+
   const [gridOptions, setGridOptions] = useState<Map<number, string[]>>(
     new Map()
   );
   const dimension = useGetDimensions();
+
+  useEffect(() => {
+    if(context.game.state === GameState.START){
+      setGridOptions(new Map());
+    }
+  },[context.game.state])
 
   const pixelSize = useMemo(() => {
     if (dimension.width <= MOBILE_WIDTH) {
@@ -76,7 +91,8 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
     return selectorOptions.map((val) => {
       const options = gridOptions.get(val.value) || [];
       const wasSelected = options.includes(val.id);
-      const state: SelectorState = wasSelected ? "inactive" : "hidden";
+
+      let state: SelectorState = wasSelected ? "inactive" : "hidden";
       
       return (
         <div key={val.id}>
@@ -93,6 +109,7 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
     });
   }, [
     selectorOptions,
+    context.game.state,
     gridOptions,
     gridMode,
     gridSize,

@@ -13,6 +13,13 @@ export const useTrackGameTime = () => {
   useEffect(() => {
     let interval: number | null = null;
 
+    if (context.game.state === GameState.START && interval){
+      clearInterval(interval);
+      setPauseDuration(0);
+      setPauseStart(null)
+      setRealTimeGameTime(0);
+    }
+
     if (!context.game.startTime) {
       console.error("Game Start time is not defined");
       return;
