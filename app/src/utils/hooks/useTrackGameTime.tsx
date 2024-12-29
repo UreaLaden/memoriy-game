@@ -13,19 +13,14 @@ export const useTrackGameTime = () => {
   useEffect(() => {
     let interval: number | null = null;
 
-    if (context.game.state === GameState.START && interval){
-      clearInterval(interval);
+    if (context.game.state === GameState.START) {     
       setPauseDuration(0);
-      setPauseStart(null)
-      setRealTimeGameTime(0);
-    }
-
-    if (!context.game.startTime) {
-      console.error("Game Start time is not defined");
+      setPauseStart(null);
+      setRealTimeGameTime(0);      
       return;
     }
 
-    if (context.game.state === GameState.ACTIVE) {
+    if (context.game.state === GameState.ACTIVE) {      
       const updatedPauseDuration =
         pauseStart !== null
           ? pauseDuration + (new Date().getTime() - pauseStart)
@@ -38,13 +33,17 @@ export const useTrackGameTime = () => {
 
       interval = setInterval(() => {
         const timeElapsed = Math.floor(
-          (new Date().getTime() - context.game.startTime!.getTime() - updatedPauseDuration) / 1000
+          (new Date().getTime() -
+            context.game.startTime!.getTime() -
+            updatedPauseDuration) /
+            1000
         );
-        
+
         setRealTimeGameTime(timeElapsed);
         context.tick(timeElapsed);
       }, 1000);
-    } else if (context.game.state === GameState.PAUSE) {
+    }
+    if (context.game.state === GameState.PAUSE) {
       if (pauseStart === null) {
         setPauseStart(new Date().getTime());
       }

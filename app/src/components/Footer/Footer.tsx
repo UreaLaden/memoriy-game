@@ -12,6 +12,8 @@ const Footer = () => {
   const context = useGameContext();
   const { formattedGameTime } = useTrackGameTime();
 
+  
+
   const footerContent = useMemo(() => {
     if (context.game.playerCount > 1) {
       return context.game.players.map((p) => (
