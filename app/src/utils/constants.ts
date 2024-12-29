@@ -1,5 +1,10 @@
 import { SelectorState } from "./models";
 
+export const MOBILE_WIDTH = 576;
+export const TABLET_WIDTH = 1024;
+export const DESKTOP_WIDTH = 1440;
+export const LARGE_DESKTOP_WIDTH = 1920;
+
 export const Colors = {
   "--orange-peal": "#FDA214",
   "--charcoal": "#304859",  

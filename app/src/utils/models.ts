@@ -30,11 +30,10 @@ export interface iSelection {
   gridSize: iGrid;
 }
 
-
 export interface iPlayer {
   id: PlayerId;
   moves: iMove[];
-  points:number;
+  points: number;
 }
 
 export interface iGame {
@@ -46,8 +45,9 @@ export interface iGame {
   theme: SelectorMode;
   playerCount: PlayerId;
   gridSize: iGrid;
-  gameTime?: Date;
+  gameTime: number;
   lastMove?: iMove;
+  activePlayer?: iPlayer;
 }
 
 export interface iContext {
@@ -71,9 +71,12 @@ export interface iContext {
 
   /**Records a new move */
   move: (move: iMove) => void;
+ 
+  /**Retrieve the numeric game time elapsed */
+  getGameTime: () => number;
 
-  /**Retrieves the formatted game time elapsed  */
-  getGameTime: () => string;
+  /*Update the game clock*/
+  tick: (timeElapsed:number) => void;
 }
 
 export interface iContextProvider {
@@ -90,7 +93,8 @@ export const Context = createContext<iContext>({
     theme: "graphic",
     playerCount: 1,
     gridSize: 4,
-    gameTime: undefined,
+    gameTime: 0,
+    activePlayer:undefined
   },
 
   newGame: (
@@ -101,6 +105,7 @@ export const Context = createContext<iContext>({
   setup: () => {},
   restart: () => {},
   pause: () => {},
-  move: (_move: iMove) => {},
-  getGameTime: () => "",
+  move: (_move: iMove) => {},  
+  getGameTime: () => -1,
+  tick: (_timeElapsed:number) => {}
 });

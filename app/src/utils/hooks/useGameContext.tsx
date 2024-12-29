@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Context, iContext } from "../models";
 
-const useGameContext = () => {
+export const useGameContext = () => {
   const context = useContext<iContext>(Context);
   if (!context) {
     throw new Error("Context failed to initialize");
@@ -9,4 +9,3 @@ const useGameContext = () => {
   return context;
 };
 
-export default useGameContext;

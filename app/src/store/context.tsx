@@ -22,7 +22,8 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
     theme: "graphic",
     playerCount: 1,
     gridSize: 4,
-    gameTime: undefined,
+    gameTime: 0,
+    activePlayer: undefined,
   });
 
   const newGameHandler = (
@@ -43,7 +44,8 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       theme: theme,
       playerCount: playerCount,
       gridSize: gridSize,
-      gameTime: undefined,
+      gameTime: 0,
+      activePlayer: newPlayers[0],
     }));
 
     const config = JSON.stringify({
@@ -64,7 +66,8 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       theme: "graphic",
       playerCount: 1,
       gridSize: 4,
-      gameTime: undefined,
+      gameTime: 0,
+      activePlayer: undefined,
     }));
   };
 
@@ -75,7 +78,8 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       endTime: undefined,
       winner: undefined,
       state: GameState.ACTIVE,
-      gameTime: undefined,
+      gameTime: 0,
+      activePlayer: prev.players[0],
     }));
   };
 
@@ -100,22 +104,30 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       };
 
       const pair = updatedPlayer.moves.filter((m) => m.value === move.value);
-      if (pair.length > 1) {
-        updatedPlayer.points = (updatedPlayer.points || 0) + 1;
-      }
+      const updatedPoints =
+        pair.length > 1 ? updatedPlayer.points + 1 : updatedPlayer.points;
+
+      const finalUpdatedPlayer = {
+        ...updatedPlayer,
+        points: updatedPoints,
+      };
 
       const updatedPlayers: iPlayer[] = [...prev.players];
-      updatedPlayers[playerIndex] = updatedPlayer;
+      const nextPlayerIndex =
+        playerIndex === prev.players.length - 1 ? 0 : playerIndex + 1;
+      updatedPlayers[playerIndex] = finalUpdatedPlayer;
+
       return {
         ...prev,
         players: updatedPlayers,
+        activePlayer: updatedPlayers[nextPlayerIndex],
       };
     });
   };
 
   const getGameTimeHandler = () => {
-    if (!game.startTime) {
-      throw new Error("Start time  is undefined");
+    if (!game.startTime) {      
+      return 0;
     }
 
     const newestTime = game.endTime?.getTime() || new Date().getTime();
@@ -124,15 +136,15 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       (newestTime - game.startTime.getTime()) / 1000
     );
 
-    const formatToMinutesAndSeconds = (totalSeconds: number): string => {
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
+    return timeElapsed;
+  };
 
-      const formattedSeconds = seconds.toString().padStart(2, "0");
-      return `${minutes}:${formattedSeconds}`;
-    };
-
-    return formatToMinutesAndSeconds(timeElapsed);
+  const tickHandler = (timeElapsed: number) => {
+    
+    setGame((prev) => ({
+      ...prev,
+      gameTime: timeElapsed,
+    }));
   };
 
   const context: iContext = useMemo(() => {
@@ -145,6 +157,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       move: moveHandler,
 
       getGameTime: getGameTimeHandler,
+      tick: tickHandler,
     };
   }, [game]);
 

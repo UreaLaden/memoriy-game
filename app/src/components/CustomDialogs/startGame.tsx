@@ -4,7 +4,7 @@ import { Colors } from "../../utils/constants";
 import ActionButton from "../ActionButton/ActionButton";
 import { SubHeader, OptionContainer, Option } from "./dialogs.component";
 import { iGrid, iSelection, PlayerId, SelectorMode } from "../../utils/models";
-import useGameContext from "../../utils/hooks/useGameContext";
+import { useGameContext } from "../../utils/hooks/useGameContext";
 import { toTitleCase } from "../../utils/helpers";
 
 export const Start: FC = () => {
@@ -100,7 +100,7 @@ export const Start: FC = () => {
             >
               {toTitleCase(val)}
             </Option>
-          ))}          
+          ))}
         </OptionContainer>
 
         <SubHeader>Numbers of Players</SubHeader>
@@ -117,7 +117,7 @@ export const Start: FC = () => {
         </OptionContainer>
         <SubHeader>Grid Size</SubHeader>
         <OptionContainer>
-        {['4x4','6x6'].map((val, idx) => (
+          {["4x4", "6x6"].map((val, idx) => (
             <Option
               key={idx + val}
               onClick={onOptionSelected}
@@ -125,7 +125,7 @@ export const Start: FC = () => {
             >
               {toTitleCase(val)}
             </Option>
-          ))}          
+          ))}
         </OptionContainer>
       </DialogContent>
       <DialogActions sx={{ margin: "0 1em 1em 1em" }}>

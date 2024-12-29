@@ -2,6 +2,12 @@ import { FC, useCallback, useMemo, useState } from "react";
 import Selector from "../Selector/Selector";
 import { SelectorMode, SelectorState } from "../../utils/models";
 import { SelectorGridContainer } from "./SelectorGrid.component";
+import { useGetDimensions } from "../../utils/hooks/useGetDimensions";
+import {
+  DESKTOP_WIDTH,
+  MOBILE_WIDTH,
+  TABLET_WIDTH,
+} from "../../utils/constants";
 
 export interface SelectorGridProps {
   gridSize: 4 | 6;
@@ -11,6 +17,20 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
   const [gridOptions, setGridOptions] = useState<Map<number, string[]>>(
     new Map()
   );
+  const dimension = useGetDimensions();
+
+  const pixelSize = useMemo(() => {
+    if (dimension.width <= MOBILE_WIDTH) {
+      return gridSize === 4 ? 75 : 50;
+    }
+    if (dimension.width <= TABLET_WIDTH) {
+      return gridSize === 4 ? 175 : 150;
+    }
+    if (dimension.width <= DESKTOP_WIDTH) {
+      return gridSize === 4 ? 150 : 100;
+    }
+    return gridSize === 4 ? 150 : 100;
+  }, [dimension, gridSize]);
 
   const onGridOptionSelected = useCallback((selection: number, id: string) => {
     setGridOptions((prev) => {
@@ -52,13 +72,12 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
     return grid;
   }, [gridSize]);
 
-  const Grid = useMemo(() => {   
-
+  const Grid = useMemo(() => {
     return selectorOptions.map((val) => {
       const options = gridOptions.get(val.value) || [];
       const wasSelected = options.includes(val.id);
       const state: SelectorState = wasSelected ? "inactive" : "hidden";
-
+      
       return (
         <div key={val.id}>
           <Selector
@@ -72,9 +91,18 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridSize, gridMode }) => {
         </div>
       );
     });
-  }, [selectorOptions, gridOptions, gridMode, gridSize, onGridOptionSelected]);
+  }, [
+    selectorOptions,
+    gridOptions,
+    gridMode,
+    gridSize,
+    onGridOptionSelected,
+    pixelSize,
+  ]);
   return (
-    <SelectorGridContainer gridsize={gridSize}>{Grid}</SelectorGridContainer>
+    <SelectorGridContainer gridsize={gridSize} pixelsize={pixelSize}>
+      {Grid}
+    </SelectorGridContainer>
   );
 };
 
