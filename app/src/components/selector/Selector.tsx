@@ -5,7 +5,7 @@ import {
   SelectorMode,
   SelectorState,
 } from "../../utils/models";
-import { ColorMap, Colors } from "../../utils/constants";
+import { ColorMap, Colors, GraphicMap } from "../../utils/constants";
 import { SnowflakeIcon } from "../../svgs";
 import { SelectorContainer } from "./Selector.components";
 
@@ -21,6 +21,10 @@ export interface SelectorProps {
 const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
   const bgColor = useMemo(() => ColorMap.get(state) || "transparent", [state]);
 
+  const GraphicIcon = useMemo(() => {
+    return GraphicMap.get(value);
+  },[value])
+
   const Graphic = useMemo(() => {
     if (mode === "graphic") {
       const iconProps: iSelectorIconProps = {
@@ -31,7 +35,7 @@ const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
         vbWidth: 56,
         vbHeight: 56,
       };
-      return state !== "hidden" && <SnowflakeIcon {...iconProps} />;
+      return state !== "hidden" && GraphicIcon && <GraphicIcon {...iconProps} />;
     }
     return (
       <div
@@ -46,7 +50,7 @@ const Selector: FC<SelectorProps> = ({ id, state, mode, value, onClick }) => {
         {value}
       </div>
     );
-  }, [mode, state, value]);
+  }, [mode, state, value,GraphicIcon]);
 
   const onSelected = () => {
     onClick(value, id);
