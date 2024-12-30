@@ -47,6 +47,7 @@ export interface iGame {
   gridSize: iGrid;
   gameTime: number;
   lastMoves: iMove[];
+  pairs: iMove[][];
   activePlayer?: iPlayer;
 }
 
@@ -96,6 +97,7 @@ export const Context = createContext<iContext>({
     gameTime: 0,
     activePlayer: undefined,
     lastMoves: [],
+    pairs: [],
   },
 
   newGame: (

@@ -25,6 +25,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
     gameTime: 0,
     activePlayer: undefined,
     lastMoves: [],
+    pairs: [],
   });
 
   const newGameHandler = (
@@ -48,6 +49,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       gameTime: 0,
       activePlayer: newPlayers[0],
       lastMoves: [],
+      pairs: [],
     }));
 
     const config = JSON.stringify({
@@ -71,6 +73,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       gameTime: 0,
       activePlayer: undefined,
       lastMoves: [],
+      pairs: [],
     }));
   };
 
@@ -84,6 +87,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       gameTime: 0,
       activePlayer: prev.players[0],
       lastMoves: [],
+      pairs:[]
     }));
   };
 
@@ -94,6 +98,17 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
         prev.state === GameState.PAUSE ? GameState.ACTIVE : GameState.PAUSE,
     }));
   };
+
+  const arePairsEqual = (pair1: iMove[], pair2: iMove[]): boolean => {
+    const sorted1 = pair1.map((m) => m.value).sort();
+    const sorted2 = pair2.map((m) => m.value).sort();
+
+    return (
+      sorted1.length === sorted2.length &&
+      sorted1.every((val, idx) => val === sorted2[idx])
+    );
+  };
+
   const moveHandler = (move: iMove) => {
     setGame((prev) => {
       const playerIndex = prev.players.findIndex((p) => p.id === move.playerId);
@@ -103,33 +118,42 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       }
       const updatedPlayer = {
         ...prev.players[playerIndex],
-        moves: [...prev.players[playerIndex].moves, move],
+        moves: [move, ...prev.players[playerIndex].moves],
         points: prev.players[playerIndex].points ?? 0,
       };
 
-      const pair = updatedPlayer.moves.filter((m) => m.value === move.value);
-      const updatedPoints =
-        pair.length > 1 ? updatedPlayer.points + 1 : updatedPlayer.points;
-
-      if (pair.length > 1) {
-        console.log("Found a Pair!");
+      let lastMoves: iMove[] = prev.lastMoves
+        ? [move, prev.lastMoves[0]]
+        : [move];
+      let updatedPairs: iMove[][] = [...prev.pairs];
+      
+      if (
+        lastMoves.length === 2 &&
+        lastMoves[0]?.value === lastMoves[1]?.value &&
+        lastMoves[0]?.id !== lastMoves[1]?.id
+      ) {
+        const isDuplicate = updatedPairs.some((p) =>
+          arePairsEqual(p, lastMoves)
+        );
+        if (!isDuplicate) {
+          updatedPairs = [...updatedPairs, [...lastMoves]];
+          
+          updatedPlayer.points += 1;
+          lastMoves = [];
+        }
       }
-
-      const finalUpdatedPlayer = {
-        ...updatedPlayer,
-        points: updatedPoints,
-      };
-
       const updatedPlayers: iPlayer[] = [...prev.players];
+      updatedPlayers[playerIndex] = updatedPlayer;
+
       const nextPlayerIndex =
         playerIndex === prev.players.length - 1 ? 0 : playerIndex + 1;
-      updatedPlayers[playerIndex] = finalUpdatedPlayer;
 
       return {
         ...prev,
         players: updatedPlayers,
         activePlayer: updatedPlayers[nextPlayerIndex],
-        lastMoves: [prev.lastMoves[1] || null, move],
+        lastMoves,
+        pairs: updatedPairs,
       };
     });
   };

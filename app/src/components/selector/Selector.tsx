@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   iSelectorIconProps,
@@ -23,37 +23,45 @@ const Selector: FC<SelectorProps> = ({ id, mode, value, onClick }) => {
   const context = useGameContext();
 
   useEffect(() => {
-    const { gameTime, lastMoves } = context.game || {};
+    const { gameTime, lastMoves, pairs } = context.game || {};    
     // If the game just started, initialize as inactive (visible)
-    if (gameTime === 0) {
-      console.log("Setting initial state");
+    if (gameTime < 3) {
       setState("inactive");
       return;
     }
 
     if (gameTime >= 3 && !startGame) {
-      console.log("Hiding everything");
       setState("hidden");
       setStartGame(true);
       return;
     }
 
-    // After the memory period, hide items that haven't been selected
-    if (state === "inactive" && !lastMoves.some((move) => move?.id === id)) {
-      //We'll want to first confirm whether there is a pair before hiding
-      console.log("Inactive Block. Checking for pair before hiding");
-      
+    // If the item was the last move, set it to active
+    if (lastMoves[0]?.id === id) {
+      if (state !== "active") {
+        setState("active");
+      }
+      return;
+    }
+    // If the item is part of a confirmed pair, keep it as inactive (visible)
+    if (pairs.some((p) => p.some((m) => m.id === id))) {
+      if (state !== "inactive") {
+        setState("inactive");
+      }
+      return;
+    }
+
+    // If the item is inactive and not part of the last moves, hide it
+    if (state === "inactive") {
       setState("hidden");
-
       return;
     }
 
-    // If the another item was clicked after this one, mark inactive (already revealed)
-    if (state === "active" && lastMoves[0]?.id === id) {      
+    // If the item is active but not the last move, mark it as inactive
+    if (state === "active" && lastMoves[0]?.id !== id) {
       setState("inactive");
-      return;
     }
-  }, [context.game?.gameTime, state, context.game.lastMoves]);
+  }, [context.game, state]);
 
   const bgColor = useMemo(() => ColorMap.get(state) || "transparent", [state]);
 
@@ -99,10 +107,13 @@ const Selector: FC<SelectorProps> = ({ id, mode, value, onClick }) => {
     );
   }, [mode, state, value, GraphicIcon]);
 
-  const onSelected = () => {
-    setState("active");
+  const onSelected = useCallback(() => {
+    if (context.game.lastMoves.some((m) => m?.id === id)) {
+      return;
+    }
+
     onClick(value, id);
-  };
+  }, [context.game.lastMoves]);
 
   return (
     <SelectorContainer
