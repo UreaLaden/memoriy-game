@@ -78,17 +78,24 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
   };
 
   const restartGameHandler = () => {
-    setGame((prev) => ({
-      ...prev,
-      startTime: new Date(),
-      endTime: undefined,
-      winner: [],
-      state: GameState.ACTIVE,
-      gameTime: 0,
-      activePlayer: prev.players[0],
-      lastMoves: [],
-      pairs: [],
-    }));
+    setGame((prev) => {
+      const newPlayers: iPlayer[] = Array.from(
+        { length: prev.playerCount },
+        (_, idx) => ({ id: idx + 1, moves: [], points: 0 } as iPlayer)
+      );
+      return {
+        ...prev,
+        startTime: new Date(),
+        endTime: undefined,
+        winner: [],
+        state: GameState.ACTIVE,
+        gameTime: 0,
+        activePlayer: newPlayers[0],
+        lastMoves: [],
+        pairs: [],
+        players: newPlayers,
+      };
+    });
   };
 
   const pauseGameHandler = () => {
@@ -122,10 +129,16 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
         points: prev.players[playerIndex].points ?? 0,
       };
 
-      let lastMoves: iMove[] = prev.lastMoves
-        ? [move, prev.lastMoves[0]]
-        : [move];
+      let lastMoves: iMove[] =
+        prev.lastMoves.length > 0 ? [move, prev.lastMoves[0]] : [move];
       let updatedPairs: iMove[][] = [...prev.pairs];
+
+      let nextPlayerIndex =
+        playerIndex === prev.players.length - 1 ? 0 : playerIndex + 1;
+
+      if (lastMoves.length < 2) {
+        nextPlayerIndex = playerIndex;
+      }
 
       if (
         lastMoves.length === 2 &&
@@ -140,13 +153,11 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
 
           updatedPlayer.points += 1;
           lastMoves = [];
+          nextPlayerIndex = playerIndex;
         }
       }
       const updatedPlayers: iPlayer[] = [...prev.players];
       updatedPlayers[playerIndex] = updatedPlayer;
-
-      const nextPlayerIndex =
-        playerIndex === prev.players.length - 1 ? 0 : playerIndex + 1;
 
       return {
         ...prev,
@@ -163,15 +174,16 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       if (prev.state === GameState.END) {
         return prev;
       }
-      let winningPlayer: iPlayer[] = [prev.players[0]];
-      let moveCount = 0;
+
+      let maxPoints = 0;
       for (let i = 0; i < prev.players.length; i++) {
         const player = prev.players[i];
-        if (player.moves.length <= moveCount) {
-          winningPlayer.push(player);
-          moveCount = player.moves.length;
+        if (player.points >= maxPoints) {
+          maxPoints = player.points;
         }
       }
+
+      const winningPlayer = prev.players.filter((p) => p.points === maxPoints);
 
       return { ...prev, state: GameState.END, winner: winningPlayer };
     });

@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Selector from "../Selector/Selector";
-import { iMove, SelectorMode, SelectorState } from "../../utils/models";
+import { iMove, SelectorMode } from "../../utils/models";
 import { SelectorGridContainer } from "./SelectorGrid.component";
 import { useGetDimensions } from "../../utils/hooks/useGetDimensions";
 import {

@@ -52,7 +52,7 @@ const Selector: FC<SelectorProps> = ({ id, mode, value, onClick }) => {
     }
 
     // If the item is inactive and not part of the last moves, hide it
-    if (state === "inactive") {
+    if (state === "inactive" && lastMoves[1]?.id !== id) {
       setState("hidden");
       return;
     }

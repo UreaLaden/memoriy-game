@@ -12,14 +12,14 @@ const Footer = () => {
   const context = useGameContext();
   const { formattedGameTime } = useTrackGameTime();
 
-  
-
   const footerContent = useMemo(() => {
-    if (context.game.playerCount > 1) {
-      return context.game.players.map((p) => (
+    const { playerCount, activePlayer, players } = context.game;
+
+    if (playerCount > 1) {
+      return players.map((p) => (
         <TurnIndicator
           key={`player-${p.id}`}
-          isActive={context.game.activePlayer === p}
+          isActive={activePlayer === p}
           player={p.id}
           playerPoints={p.points}
         />
@@ -34,11 +34,11 @@ const Footer = () => {
         </ContentContainer>
         <ContentContainer>
           <div>Moves</div>
-          <div>{context.game.players[0]?.moves.length}</div>
+          <div>{players[0]?.moves.length}</div>
         </ContentContainer>
       </MainContent>
     );
-  }, [context.game.players, formattedGameTime]);
+  }, [formattedGameTime, context.game]);
   return <FooterContainer>{footerContent}</FooterContainer>;
 };
 export default Footer;

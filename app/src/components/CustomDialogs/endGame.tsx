@@ -3,13 +3,13 @@ import React, { FC, useMemo } from "react";
 import ActionButton from "../ActionButton/ActionButton";
 import {
   MainHeader,
-  MetricContainer,
-  MetricItemContainer,
+  MetricContainer,  
   SubHeader,
 } from "./dialogs.component";
 import { Colors } from "../../utils/constants";
 import { useGameContext } from "../../utils/hooks/useGameContext";
-import { iPlayer, PlayerId } from "../../utils/models";
+import { iPlayer } from "../../utils/models";
+import { Metric } from "../Metric/Metric";
 
 export const End: FC = () => {
   const context = useGameContext();
@@ -24,9 +24,12 @@ export const End: FC = () => {
   }, [context.game.winner]);
 
   const TitleText = useMemo(() => {
+    if (context.game.players.length === 1) {
+      return "You did it!";
+    }
     const winnerStr =
       winner.length > 1
-        ? `Players ${winner.map((w) => w.id).join(", ")} Tied!`
+        ? `Players ${winner.map((w) => w.id).join(" and ")} Tied!`
         : `Player ${winner[0].id} Wins!`;
     return winnerStr;
   }, [winner]);
@@ -34,6 +37,47 @@ export const End: FC = () => {
   const onStartNewGame = () => {
     context.setup();
   };
+
+  const endGameContent = useMemo(() => {
+    if (context.game.players.length > 1) {
+      return context.game.players.map((player: iPlayer) => {
+        return (
+          <MetricContainer
+            $fontColor={
+              winner.includes(player) ? Colors["--white"] : Colors["--charcoal"]
+            }
+            key={player.id + "player"}
+          >
+            <Metric
+              highlight={winner.includes(player)}
+              displayWinnerFlag={winner.includes(player)}
+              player={player}
+              isSolo={false}
+              secondaryTextType={"pair"}
+            />
+          </MetricContainer>
+        );
+      });
+    }
+    return (
+      <MetricContainer $fontColor={Colors["--air-force-blue"]}>
+        <Metric
+          highlight={false}
+          displayWinnerFlag={false}
+          player={context.game.players[0]}
+          isSolo={true}
+          secondaryTextType={"time"}
+        />
+        <Metric
+          highlight={false}
+          displayWinnerFlag={false}
+          player={context.game.players[0]}
+          isSolo={true}
+          secondaryTextType={"moves"}
+        />
+      </MetricContainer>
+    );
+  }, [context.game.players]);
 
   return (
     <React.Fragment>
@@ -53,37 +97,7 @@ export const End: FC = () => {
       <DialogContent
         sx={{ rowGap: "1em", display: "flex", flexDirection: "column" }}
       >
-        {context.game.players.map((player: iPlayer) => {
-          return (
-            <MetricContainer
-              $bgColor={
-                winner.includes(player)
-                  ? Colors["--gunmetal"]
-                  : Colors["--white-smoke"]
-              }
-              $fontColor={
-                winner.includes(player)
-                  ? Colors["--white"]
-                  : Colors["--charcoal"]
-              }
-              key={player.id + "player"}
-            >
-              <MetricItemContainer>
-                <span
-                  style={{
-                    color: winner.includes(player)
-                      ? Colors["--air-force-blue"]
-                      : Colors["--white"],
-                  }}
-                >
-                  Player {player.id}{" "}
-                  {winner.includes(player) ? "(Winner!)" : ""}
-                </span>
-                <span style={{ fontSize: "1.5em" }}>{player.points} Pairs</span>
-              </MetricItemContainer>
-            </MetricContainer>
-          );
-        })}
+        {endGameContent}
       </DialogContent>
       <DialogActions
         sx={{ margin: "0 1em 1em 1em", flexDirection: "column", rowGap: "1em" }}

@@ -44,12 +44,13 @@ export const BackdropHeader = styled.h1`
   z-index: 1400;
 `;
 
-export const SubHeader = styled.h3<{ $resetMargin?: boolean }>`
+export const SubHeader = styled.div<{ $resetMargin?: boolean }>`
   color: ${Colors["--air-force-blue"]};
-  fontweight: 700;
+  font-weight: 700;
   margin: ${({ $resetMargin }) => ($resetMargin ? 0 : "1 0")};
   font-size: 1rem;
-  white-space: nowrap;
+  white-space: nowrap;  
+  padding:.5em 0;
 `;
 
 export const MainHeader = styled.div`
@@ -58,7 +59,7 @@ export const MainHeader = styled.div`
   padding: 0;
   lineheight: 1;
   margin: 0;
-  font-size:2em;
+  font-size:x-large;
   font-weight:700
 `;
 
@@ -91,15 +92,19 @@ export const MetricContainer = styled.div<{
   $bgColor?: string;
   $fontColor?: string;
 }>`
-  color: ${({ $fontColor }) => $fontColor || Colors["--white"]};
-  background-color: ${({ $bgColor }) => $bgColor || Colors["--gunmetal"]};
-  padding: 1em;
+  color: ${({ $fontColor }) => $fontColor || Colors["--white"]};    
   border-radius: 10px;
+  display:flex;
+  flex-direction:column;
+  row-gap:1em;
 `;
 
-export const MetricItemContainer = styled.div`
+export const MetricItemContainer = styled.div<{$bgColor?:string}>`
   font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: ${({ $bgColor }) => $bgColor || Colors["--gunmetal"]};
+  padding:1em .75em;
+  border-radius:10px;  
 `;
