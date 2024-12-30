@@ -19,7 +19,6 @@ type Story = StoryObj<typeof meta>;
 export const Hidden: Story = {
   args: {
     id:"testId",
-    state: "hidden",
     value: 6,
     mode: "graphic",
     gridSize: 4,
@@ -33,8 +32,7 @@ export const Hidden: Story = {
 
 export const WithGraphicActive: Story = {
   args: {
-    id:"testId",
-    state: "active",
+    id:"testId",    
     value: 6,
     mode: "graphic",
     gridSize: 6,
@@ -49,7 +47,6 @@ export const WithGraphicActive: Story = {
 export const WithGraphicInactive: Story = {
   args: {
     id:"testId",
-    state: "inactive",
     value: 6,
     mode: "graphic",
     gridSize: 4,
@@ -64,7 +61,6 @@ export const WithGraphicInactive: Story = {
 export const NoGraphicActive: Story = {
   args: {
     id:"testId",
-    state: "active",
     value: 18,
     mode: "digit",
     gridSize: 6,
@@ -87,7 +83,6 @@ export const NoGraphicActive: Story = {
 export const NoGraphicInactive: Story = {
   args: {
     id:"testId",
-    state: "inactive",
     value: 6,
     mode: "digit",
     gridSize:4

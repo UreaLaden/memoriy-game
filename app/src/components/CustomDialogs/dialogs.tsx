@@ -5,7 +5,6 @@ import {
   BootstrapDialog,
   StyledBackdrop,
 } from "./dialogs.component";
-import { BackdropRoot, DialogContent } from "@mui/material";
 import { Start } from "./startGame";
 import { Pause } from "./pause";
 import { End } from "./endGame";
