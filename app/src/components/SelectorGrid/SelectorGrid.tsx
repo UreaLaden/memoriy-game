@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Selector from "../Selector/Selector";
-import { SelectorMode, SelectorState } from "../../utils/models";
+import { iMove, SelectorMode, SelectorState } from "../../utils/models";
 import { SelectorGridContainer } from "./SelectorGrid.component";
 import { useGetDimensions } from "../../utils/hooks/useGetDimensions";
 import {
@@ -29,10 +29,10 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridMode }) => {
   const dimension = useGetDimensions();
 
   useEffect(() => {
-    if(context.game.state === GameState.START){
+    if (context.game.state === GameState.START) {
       setGridOptions(new Map());
     }
-  },[context.game.state])
+  }, [context.game.state]);
 
   const pixelSize = useMemo(() => {
     if (dimension.width <= MOBILE_WIDTH) {
@@ -47,23 +47,37 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridMode }) => {
     return gridSize === 4 ? 150 : 100;
   }, [dimension, gridSize]);
 
-  const onGridOptionSelected = useCallback((selection: number, id: string) => {
-    setGridOptions((prev) => {
-      const updatedOptions = new Map(prev);
-
-      const prevSelections = updatedOptions.get(selection) || [];
-
-      if (prevSelections.length > 1 && prevSelections.includes(id)) {
-        return updatedOptions;
+  const onGridOptionSelected = useCallback(
+    (selection: number, id: string) => {
+      if (!context.game.activePlayer) {
+        console.warn("There is no registered active player");
+        return;
       }
+      setGridOptions((prev) => {
+        const updatedOptions = new Map(prev);
 
-      const updatedSelections = [...prevSelections, id];
+        const prevSelections = updatedOptions.get(selection) || [];
 
-      updatedOptions.set(selection, updatedSelections);
+        if (prevSelections.length > 1 && prevSelections.includes(id)) {
+          return updatedOptions;
+        }
 
-      return updatedOptions;
-    });
-  }, []);
+        const updatedSelections = [...prevSelections, id];
+
+        updatedOptions.set(selection, updatedSelections);
+
+        return updatedOptions;
+      });
+
+      const move: iMove = {
+        id: id,
+        value: selection,
+        playerId: context.game.activePlayer?.id,
+      };
+      context.move(move);
+    },
+    [context.game.activePlayer, context.game.lastMoves]
+  );
 
   function shuffleArray<T>(array: T[]) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -88,25 +102,17 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridMode }) => {
   }, [gridSize]);
 
   const Grid = useMemo(() => {
-    return selectorOptions.map((val) => {
-      const options = gridOptions.get(val.value) || [];
-      const wasSelected = options.includes(val.id);
-
-      let state: SelectorState = wasSelected ? "inactive" : "hidden";
-      
-      return (
-        <div key={val.id}>
-          <Selector
-            id={val.id}
-            mode={gridMode}
-            gridSize={gridSize}
-            state={state}
-            value={val.value}
-            onClick={onGridOptionSelected}
-          />
-        </div>
-      );
-    });
+    return selectorOptions.map((val) => (
+      <div key={val.id}>
+        <Selector
+          id={val.id}
+          mode={gridMode}
+          gridSize={gridSize}
+          value={val.value}
+          onClick={onGridOptionSelected}
+        />
+      </div>
+    ));
   }, [
     selectorOptions,
     context.game.state,

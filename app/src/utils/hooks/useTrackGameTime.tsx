@@ -74,5 +74,5 @@ export const useTrackGameTime = () => {
     return formatToMinutesAndSeconds(realTimeGameTime);
   }, [realTimeGameTime]);
 
-  return { formattedGameTime };
+  return { formattedGameTime,realTimeGameTime };
 };

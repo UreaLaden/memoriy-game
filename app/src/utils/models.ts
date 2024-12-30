@@ -20,7 +20,7 @@ export interface iSelectorIconProps {
 
 export interface iMove {
   id: string;
-  value: string;
+  value: number;
   playerId: PlayerId;
 }
 
@@ -46,7 +46,7 @@ export interface iGame {
   playerCount: PlayerId;
   gridSize: iGrid;
   gameTime: number;
-  lastMove?: iMove;
+  lastMoves: iMove[];
   activePlayer?: iPlayer;
 }
 
@@ -71,12 +71,12 @@ export interface iContext {
 
   /**Records a new move */
   move: (move: iMove) => void;
- 
+
   /**Retrieve the numeric game time elapsed */
   getGameTime: () => number;
 
   /*Update the game clock*/
-  tick: (timeElapsed:number) => void;
+  tick: (timeElapsed: number) => void;
 }
 
 export interface iContextProvider {
@@ -94,7 +94,8 @@ export const Context = createContext<iContext>({
     playerCount: 1,
     gridSize: 4,
     gameTime: 0,
-    activePlayer:undefined
+    activePlayer: undefined,
+    lastMoves: [],
   },
 
   newGame: (
@@ -105,7 +106,7 @@ export const Context = createContext<iContext>({
   setup: () => {},
   restart: () => {},
   pause: () => {},
-  move: (_move: iMove) => {},  
+  move: (_move: iMove) => {},
   getGameTime: () => -1,
-  tick: (_timeElapsed:number) => {}
+  tick: (_timeElapsed: number) => {},
 });

@@ -1,14 +1,24 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { iSelectorIconProps, SelectorState } from "./models";
 import {
+  BoltIcon,
+  BrainIcon,
   BugIcon,
   FlaskIcon,
   FutbolIcon,
+  GamePadIcon,
   LiraIcon,
   MoonIcon,
   SnowflakeIcon,
   SpockIcon,
   SunIcon,
+  LinuxIcon,
+  PuzzleIcon,
+  OtterIcon,
+  ChurchIcon,
+  ChairIcon,
+  CommandIcon,
+  DumbellIcon,
 } from "../svgs";
 
 export const MOBILE_WIDTH = 576;
@@ -49,4 +59,14 @@ export const GraphicMap: Map<number, FC<iSelectorIconProps>> = new Map([
   [6, SnowflakeIcon],
   [7, SpockIcon],
   [8, SunIcon],
+  [9, BoltIcon],
+  [10, GamePadIcon],
+  [11, BrainIcon],
+  [12, LinuxIcon],
+  [13, PuzzleIcon],
+  [14, OtterIcon],
+  [15, ChurchIcon],
+  [16, ChairIcon],
+  [17, CommandIcon],
+  [18, DumbellIcon],
 ]);

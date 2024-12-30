@@ -24,6 +24,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
     gridSize: 4,
     gameTime: 0,
     activePlayer: undefined,
+    lastMoves: [],
   });
 
   const newGameHandler = (
@@ -46,6 +47,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       gridSize: gridSize,
       gameTime: 0,
       activePlayer: newPlayers[0],
+      lastMoves: [],
     }));
 
     const config = JSON.stringify({
@@ -68,6 +70,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       gridSize: 4,
       gameTime: 0,
       activePlayer: undefined,
+      lastMoves: [],
     }));
   };
 
@@ -80,6 +83,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       state: GameState.ACTIVE,
       gameTime: 0,
       activePlayer: prev.players[0],
+      lastMoves: [],
     }));
   };
 
@@ -107,6 +111,10 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       const updatedPoints =
         pair.length > 1 ? updatedPlayer.points + 1 : updatedPlayer.points;
 
+      if (pair.length > 1) {
+        console.log("Found a Pair!");
+      }
+
       const finalUpdatedPlayer = {
         ...updatedPlayer,
         points: updatedPoints,
@@ -121,12 +129,13 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
         ...prev,
         players: updatedPlayers,
         activePlayer: updatedPlayers[nextPlayerIndex],
+        lastMoves: [prev.lastMoves[1] || null, move],
       };
     });
   };
 
   const getGameTimeHandler = () => {
-    if (!game.startTime) {      
+    if (!game.startTime) {
       return 0;
     }
 
@@ -140,7 +149,6 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
   };
 
   const tickHandler = (timeElapsed: number) => {
-    
     setGame((prev) => ({
       ...prev,
       gameTime: timeElapsed,
