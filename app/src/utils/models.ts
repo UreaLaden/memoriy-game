@@ -40,7 +40,7 @@ export interface iGame {
   players: iPlayer[];
   startTime?: Date;
   endTime?: Date;
-  winner?: iPlayer | iPlayer[];
+  winner: iPlayer[];
   state: GameState;
   theme: SelectorMode;
   playerCount: PlayerId;
@@ -73,6 +73,9 @@ export interface iContext {
   /**Records a new move */
   move: (move: iMove) => void;
 
+  /**Process End Game*/
+  endGame: () => void;
+
   /**Retrieve the numeric game time elapsed */
   getGameTime: () => number;
 
@@ -89,7 +92,7 @@ export const Context = createContext<iContext>({
     players: [],
     startTime: undefined,
     endTime: undefined,
-    winner: undefined,
+    winner: [],
     state: GameState.START,
     theme: "graphic",
     playerCount: 1,
@@ -108,6 +111,7 @@ export const Context = createContext<iContext>({
   setup: () => {},
   restart: () => {},
   pause: () => {},
+  endGame: () => {},
   move: (_move: iMove) => {},
   getGameTime: () => -1,
   tick: (_timeElapsed: number) => {},

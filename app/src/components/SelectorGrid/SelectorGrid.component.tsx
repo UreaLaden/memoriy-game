@@ -1,41 +1,41 @@
 import { styled } from "styled-components";
 
 export const SelectorGridContainer = styled.div<{
-  gridsize: number;
-  pixelsize: number;
+  $gridSize: number;
+  $pixelSize: number;
 }>`
   height: auto;
 
   display: grid;
   grid-template-columns: repeat(
-    ${({ gridsize }) => gridsize},
-    ${({ pixelsize }) => pixelsize}px
+    ${({ $gridSize }) => $gridSize},
+    ${({ $pixelSize }) => $pixelSize}px
   );
   grid-template-rows: repeat(
-    ${({ gridsize }) => gridsize},
-    ${({ pixelsize }) => pixelsize}px
+    ${({ $gridSize }) => $gridSize},
+    ${({ $pixelSize }) => $pixelSize}px
   );
   grid-gap: 0.5em;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(
-      ${({ gridsize }) => gridsize},
-      ${({ pixelsize }) => pixelsize}px
+      ${({ $gridSize }) => $gridSize},
+      ${({ $pixelSize }) => $pixelSize}px
     );
     grid-template-rows: repeat(
-      ${({ gridsize }) => gridsize},
-      ${({ pixelsize }) => pixelsize}px
+      ${({ $gridSize }) => $gridSize},
+      ${({ $pixelSize }) => $pixelSize}px
     );
   }
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(
-      ${({ gridsize }) => gridsize},
-      ${({ pixelsize }) => pixelsize}px
+      ${({ $gridSize }) => $gridSize},
+      ${({ $pixelSize }) => $pixelSize}px
     );
     grid-template-rows: repeat(
-      ${({ gridsize }) => gridsize},
-      ${({ pixelsize }) => pixelsize}px
+      ${({ $gridSize }) => $gridSize},
+      ${({ $pixelSize }) => $pixelSize}px
     );
   }
 `;

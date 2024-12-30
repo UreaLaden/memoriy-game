@@ -23,7 +23,7 @@ const Selector: FC<SelectorProps> = ({ id, mode, value, onClick }) => {
   const context = useGameContext();
 
   useEffect(() => {
-    const { gameTime, lastMoves, pairs } = context.game || {};    
+    const { gameTime, lastMoves, pairs } = context.game || {};
     // If the game just started, initialize as inactive (visible)
     if (gameTime < 3) {
       setState("inactive");
@@ -108,17 +108,13 @@ const Selector: FC<SelectorProps> = ({ id, mode, value, onClick }) => {
   }, [mode, state, value, GraphicIcon]);
 
   const onSelected = useCallback(() => {
-    if (context.game.lastMoves.some((m) => m?.id === id)) {
-      return;
-    }
-
     onClick(value, id);
   }, [context.game.lastMoves]);
 
   return (
     <SelectorContainer
-      bgcolor={bgColor}
-      hovercolor={Colors["--air-super-blue"]}
+      $bgColor={bgColor}
+      $hoverColor={Colors["--air-super-blue"]}
       onClick={onSelected}
     >
       {Graphic}

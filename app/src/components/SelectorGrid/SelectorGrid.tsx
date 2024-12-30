@@ -31,8 +31,13 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridMode }) => {
   useEffect(() => {
     if (context.game.state === GameState.START) {
       setGridOptions(new Map());
+      return;
     }
-  }, [context.game.state]);
+
+    if (context.game.pairs.length === gridSize * 2) {
+      context.endGame();
+    }
+  }, [context.game]);
 
   const pixelSize = useMemo(() => {
     if (dimension.width <= MOBILE_WIDTH) {
@@ -123,7 +128,7 @@ const SelectorGrid: FC<SelectorGridProps> = ({ gridMode }) => {
     pixelSize,
   ]);
   return (
-    <SelectorGridContainer gridsize={gridSize} pixelsize={pixelSize}>
+    <SelectorGridContainer $gridSize={gridSize} $pixelSize={pixelSize}>
       {Grid}
     </SelectorGridContainer>
   );

@@ -23,13 +23,13 @@ export const BootstrapDialog = styledMUI(Dialog)(({ theme }) => ({
   },
 }));
 
-export const StyledBackdrop = styled.div<{ bgcolor?: string }>`
+export const StyledBackdrop = styled.div<{ $bgColor?: string }>`
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: ${({ bgcolor }) => bgcolor || "rgba(0, 0, 0, 0.8)"};
+  background-color: ${({ $bgColor }) => $bgColor || "rgba(0, 0, 0, 0.8)"};
   z-index: 1300;
 `;
 
@@ -44,20 +44,22 @@ export const BackdropHeader = styled.h1`
   z-index: 1400;
 `;
 
-export const SubHeader = styled.h3<{ resetmargin?: boolean }>`
+export const SubHeader = styled.h3<{ $resetMargin?: boolean }>`
   color: ${Colors["--air-force-blue"]};
   fontweight: 700;
-  margin: ${({ resetmargin }) => (resetmargin ? 0 : "1 0")};
+  margin: ${({ $resetMargin }) => ($resetMargin ? 0 : "1 0")};
   font-size: 1rem;
   white-space: nowrap;
 `;
 
-export const MainHeader = styled.h2`
+export const MainHeader = styled.div`
   color: ${Colors["--gunmetal"]};
   fontweight: 700;
   padding: 0;
   lineheight: 1;
   margin: 0;
+  font-size:2em;
+  font-weight:700
 `;
 
 export const OptionContainer = styled.div`
@@ -69,9 +71,9 @@ export const OptionContainer = styled.div`
   cursor: pointer;
 `;
 
-export const Option = styled.div<{ bgcolor?: string }>`
+export const Option = styled.div<{ $bgColor?: string }>`
   color: ${Colors["--white"]};
-  background-color: ${({ bgcolor }) => bgcolor || "transparent"};
+  background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   padding: 0.5em;
   width: 50%;
   border-radius: 25px;
@@ -86,11 +88,11 @@ export const Option = styled.div<{ bgcolor?: string }>`
 `;
 
 export const MetricContainer = styled.div<{
-  bgcolor?: string;
-  fontcolor?: string;
+  $bgColor?: string;
+  $fontColor?: string;
 }>`
-  color: ${({ fontcolor }) => fontcolor || Colors["--white"]};
-  background-color: ${({ bgcolor }) => bgcolor || Colors["--gunmetal"]};
+  color: ${({ $fontColor }) => $fontColor || Colors["--white"]};
+  background-color: ${({ $bgColor }) => $bgColor || Colors["--gunmetal"]};
   padding: 1em;
   border-radius: 10px;
 `;

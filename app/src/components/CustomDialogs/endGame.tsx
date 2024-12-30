@@ -8,25 +8,32 @@ import {
   SubHeader,
 } from "./dialogs.component";
 import { Colors } from "../../utils/constants";
+import { useGameContext } from "../../utils/hooks/useGameContext";
+import { iPlayer, PlayerId } from "../../utils/models";
 
 export const End: FC = () => {
+  const context = useGameContext();
+
   const onRestartGame = () => {
-    console.log("Restart not yet implemented");
+    context.restart();
   };
+
+  const winner = useMemo(() => {
+    const winner = context.game.winner;
+    return winner;
+  }, [context.game.winner]);
 
   const TitleText = useMemo(() => {
-    return "Player 3 Wins!";
-  }, []);
+    const winnerStr =
+      winner.length > 1
+        ? `Players ${winner.map((w) => w.id).join(", ")} Tied!`
+        : `Player ${winner[0].id} Wins!`;
+    return winnerStr;
+  }, [winner]);
 
   const onStartNewGame = () => {
-    console.log("Restart not yet implemented");
+    context.setup();
   };
-
-  const PlayerStats = Array.from<number>({ length: 4 }).map(
-    (_: number, idx: number) => idx + 1
-  );
-
-  const winner = 1;
 
   return (
     <React.Fragment>
@@ -39,36 +46,40 @@ export const End: FC = () => {
         }}
       >
         <MainHeader>{TitleText}</MainHeader>
-        <SubHeader resetmargin={true}>
+        <SubHeader $resetMargin={true}>
           Game over! Here are the results...
         </SubHeader>
       </DialogTitle>
       <DialogContent
         sx={{ rowGap: "1em", display: "flex", flexDirection: "column" }}
       >
-        {PlayerStats.map((idx: number) => {
+        {context.game.players.map((player: iPlayer) => {
           return (
             <MetricContainer
-              bgcolor={
-                idx === winner ? Colors["--gunmetal"] : Colors["--white-smoke"]
+              $bgColor={
+                winner.includes(player)
+                  ? Colors["--gunmetal"]
+                  : Colors["--white-smoke"]
               }
-              fontcolor={
-                idx === winner ? Colors["--white"] : Colors["--charcoal"]
+              $fontColor={
+                winner.includes(player)
+                  ? Colors["--white"]
+                  : Colors["--charcoal"]
               }
-              key={idx + "player"}
+              key={player.id + "player"}
             >
               <MetricItemContainer>
                 <span
                   style={{
-                    color:
-                      idx !== winner
-                        ? Colors["--air-force-blue"]
-                        : Colors["--white"],
+                    color: winner.includes(player)
+                      ? Colors["--air-force-blue"]
+                      : Colors["--white"],
                   }}
                 >
-                  Player {idx} {idx === winner ? "(Winner!)" : ""}
+                  Player {player.id}{" "}
+                  {winner.includes(player) ? "(Winner!)" : ""}
                 </span>
-                <span style={{ fontSize: "1.5em" }}>{idx} Pairs</span>
+                <span style={{ fontSize: "1.5em" }}>{player.points} Pairs</span>
               </MetricItemContainer>
             </MetricContainer>
           );

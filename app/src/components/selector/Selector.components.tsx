@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const SelectorContainer = styled.div<{
-  bgcolor?: string;
-  hovercolor?: string;
+  $bgColor?: string;
+  $hoverColor?: string;
 }>`
-  background-color: ${({ bgcolor }) => bgcolor || "transparent"};
+  background-color: ${({ $bgColor }) => $bgColor || "transparent"};
   border-radius: 50%;
   height: 100%;
   display: flex;
@@ -14,7 +14,7 @@ export const SelectorContainer = styled.div<{
   font-family:'Atkinson Hyperlegible';
 
   &:hover {
-    background-color: ${({ hovercolor }) => hovercolor || "transparent"};
+    background-color: ${({ $hoverColor }) => $hoverColor || "transparent"};
     cursor: pointer;
   }
 `;

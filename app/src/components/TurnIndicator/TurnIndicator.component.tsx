@@ -48,7 +48,7 @@ export const IndicatorContainer = styled.div<{ $isActive: boolean }>`
     @media (min-width: ${MOBILE_WIDTH}px) {
       padding: 0 0 0 .1em;
       flex:unset;
-      font-size:2em;
+      font-size:1em;
     }
   }
 
@@ -61,7 +61,7 @@ export const IndicatorContainer = styled.div<{ $isActive: boolean }>`
     flex: 2;
 
     @media (min-width: ${MOBILE_WIDTH}px) {
-      font-size:4em;
+      font-size:2.5em;
       flex:unset;
     }
   }

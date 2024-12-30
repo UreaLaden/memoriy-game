@@ -96,7 +96,7 @@ export const Start: FC = () => {
             <Option
               key={idx + val}
               onClick={onOptionSelected}
-              bgcolor={currentColor(val)}
+              $bgColor={currentColor(val)}
             >
               {toTitleCase(val)}
             </Option>
@@ -109,7 +109,7 @@ export const Start: FC = () => {
             <Option
               key={idx + val}
               onClick={onOptionSelected}
-              bgcolor={currentColor(`${val}`)}
+              $bgColor={currentColor(`${val}`)}
             >
               {val}
             </Option>
@@ -121,7 +121,7 @@ export const Start: FC = () => {
             <Option
               key={idx + val}
               onClick={onOptionSelected}
-              bgcolor={currentColor(val)}
+              $bgColor={currentColor(val)}
             >
               {toTitleCase(val)}
             </Option>

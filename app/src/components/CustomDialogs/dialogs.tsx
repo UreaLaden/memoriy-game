@@ -41,7 +41,7 @@ const CustomDialog: FC<CustomDialogProps> = ({
   return (
     <>
       {gameState === GameState.START && isOpen && (
-        <StyledBackdrop bgcolor={Colors["--gunmetal"]}>
+        <StyledBackdrop $bgColor={Colors["--gunmetal"]}>
           <BackdropHeader>memory</BackdropHeader>
         </StyledBackdrop>
       )}

@@ -17,7 +17,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
     players: [],
     startTime: undefined,
     endTime: undefined,
-    winner: undefined,
+    winner: [],
     state: GameState.START,
     theme: "graphic",
     playerCount: 1,
@@ -41,7 +41,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       players: newPlayers,
       startTime: new Date(),
       endTime: undefined,
-      winner: undefined,
+      winner: [],
       state: GameState.ACTIVE,
       theme: theme,
       playerCount: playerCount,
@@ -65,7 +65,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       players: [],
       startTime: undefined,
       endTime: undefined,
-      winner: undefined,
+      winner: [],
       state: GameState.START,
       theme: "graphic",
       playerCount: 1,
@@ -82,12 +82,12 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       ...prev,
       startTime: new Date(),
       endTime: undefined,
-      winner: undefined,
+      winner: [],
       state: GameState.ACTIVE,
       gameTime: 0,
       activePlayer: prev.players[0],
       lastMoves: [],
-      pairs:[]
+      pairs: [],
     }));
   };
 
@@ -126,7 +126,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
         ? [move, prev.lastMoves[0]]
         : [move];
       let updatedPairs: iMove[][] = [...prev.pairs];
-      
+
       if (
         lastMoves.length === 2 &&
         lastMoves[0]?.value === lastMoves[1]?.value &&
@@ -137,7 +137,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
         );
         if (!isDuplicate) {
           updatedPairs = [...updatedPairs, [...lastMoves]];
-          
+
           updatedPlayer.points += 1;
           lastMoves = [];
         }
@@ -155,6 +155,25 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
         lastMoves,
         pairs: updatedPairs,
       };
+    });
+  };
+
+  const endGameHandler = () => {
+    setGame((prev) => {
+      if (prev.state === GameState.END) {
+        return prev;
+      }
+      let winningPlayer: iPlayer[] = [prev.players[0]];
+      let moveCount = 0;
+      for (let i = 0; i < prev.players.length; i++) {
+        const player = prev.players[i];
+        if (player.moves.length <= moveCount) {
+          winningPlayer.push(player);
+          moveCount = player.moves.length;
+        }
+      }
+
+      return { ...prev, state: GameState.END, winner: winningPlayer };
     });
   };
 
@@ -187,7 +206,7 @@ const ContextProvider: FC<iContextProvider> = ({ children }) => {
       restart: restartGameHandler,
       pause: pauseGameHandler,
       move: moveHandler,
-
+      endGame: endGameHandler,
       getGameTime: getGameTimeHandler,
       tick: tickHandler,
     };
